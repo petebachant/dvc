@@ -153,7 +153,10 @@ def test_ls_repo_with_path_dir_dvc_only_empty(tmp_dir, dvc, scm):
 
     assert Repo.ls(os.fspath(tmp_dir), path="folder", dvc_only=True) == []
 
-    assert Repo.ls(os.fspath(tmp_dir), path="empty_dvc_folder", dvc_only=True) == []
+    assert (
+        Repo.ls(os.fspath(tmp_dir), path="empty_dvc_folder", dvc_only=True)
+        == []
+    )
 
 
 def test_ls_repo_with_path_subdir(tmp_dir, dvc, scm):
@@ -188,7 +191,9 @@ def test_ls_repo_with_path_subdir_dvc_only_recursive(tmp_dir, dvc, scm):
 
     path = os.path.join("data", "subcontent")
     files = Repo.ls(os.fspath(tmp_dir), path, dvc_only=True, recursive=True)
-    match_files(files, ((("data.xml",), True), (("statistics", "data.csv"), True)))
+    match_files(
+        files, ((("data.xml",), True), (("statistics", "data.csv"), True))
+    )
 
 
 def test_ls_repo_with_path_file_out(tmp_dir, dvc, scm):
@@ -222,7 +227,12 @@ def test_ls_repo_with_missed_path_dvc_only(tmp_dir, dvc, scm):
     tmp_dir.dvc_gen(DVC_STRUCTURE, commit="dvc")
 
     with pytest.raises(FileNotFoundError):
-        Repo.ls(os.fspath(tmp_dir), path="missed_path", recursive=True, dvc_only=True)
+        Repo.ls(
+            os.fspath(tmp_dir),
+            path="missed_path",
+            recursive=True,
+            dvc_only=True,
+        )
 
 
 def test_ls_repo_with_removed_dvc_dir(tmp_dir, dvc, scm):
@@ -467,20 +477,50 @@ def test_ls_granular(erepo_dir, M):
 
     entries = Repo.ls(os.fspath(erepo_dir), os.path.join("dir", "subdir"))
     assert entries == [
-        {"isout": True, "isdir": False, "isexec": False, "path": "bar", "size": 3},
-        {"isout": True, "isdir": False, "isexec": False, "path": "foo", "size": 3},
+        {
+            "isout": True,
+            "isdir": False,
+            "isexec": False,
+            "path": "bar",
+            "size": 3,
+            "md5": "37b51d194a7513e45b56f6524f2d51f2",
+        },
+        {
+            "isout": True,
+            "isdir": False,
+            "isexec": False,
+            "path": "foo",
+            "size": 3,
+            "md5": "acbd18db4cc2f85cedef654fccc4a4d8",
+        },
     ]
 
     entries = Repo.ls(os.fspath(erepo_dir), "dir")
+    print(entries)
     assert entries == [
-        {"isout": True, "isdir": False, "isexec": False, "path": "1", "size": 1},
-        {"isout": True, "isdir": False, "isexec": False, "path": "2", "size": 1},
+        {
+            "isout": True,
+            "isdir": False,
+            "isexec": False,
+            "path": "1",
+            "size": 1,
+            "md5": "c4ca4238a0b923820dcc509a6f75849b",
+        },
+        {
+            "isout": True,
+            "isdir": False,
+            "isexec": False,
+            "path": "2",
+            "size": 1,
+            "md5": "c81e728d9d4c2f636f067f89cc14862c",
+        },
         {
             "isout": True,
             "isdir": True,
             "isexec": False,
             "path": "subdir",
             "size": M.instance_of(int),
+            "md5": None,
         },
     ]
 
@@ -506,14 +546,38 @@ def test_ls_target(erepo_dir, use_scm):
         return Repo.ls(os.fspath(erepo_dir), path)
 
     assert _ls(os.path.join("dir", "1")) == [
-        {"isout": isout, "isdir": False, "isexec": False, "path": "1", "size": 1}
+        {
+            "isout": isout,
+            "isdir": False,
+            "isexec": False,
+            "path": "1",
+            "size": 1,
+        }
     ]
     assert _ls(os.path.join("dir", "subdir", "foo")) == [
-        {"isout": isout, "isdir": False, "isexec": False, "path": "foo", "size": 3}
+        {
+            "isout": isout,
+            "isdir": False,
+            "isexec": False,
+            "path": "foo",
+            "size": 3,
+        }
     ]
     assert _ls(os.path.join("dir", "subdir")) == [
-        {"isdir": False, "isexec": 0, "isout": isout, "path": "bar", "size": 3},
-        {"isdir": False, "isexec": 0, "isout": isout, "path": "foo", "size": 3},
+        {
+            "isdir": False,
+            "isexec": 0,
+            "isout": isout,
+            "path": "bar",
+            "size": 3,
+        },
+        {
+            "isdir": False,
+            "isexec": 0,
+            "isout": isout,
+            "path": "foo",
+            "size": 3,
+        },
     ]
 
 
@@ -548,7 +612,9 @@ def test_subrepo(request, dvc_top_level, erepo_type):
     dvc_files = {"dvc_dir", "foo.txt", "foo.txt.dvc", "dvc_dir.dvc"}
     common_outputs = git_tracked_outputs | extras | dvc_files
 
-    top_level_outputs = common_outputs if dvc_top_level else git_tracked_outputs
+    top_level_outputs = (
+        common_outputs if dvc_top_level else git_tracked_outputs
+    )
     assert _list_files(erepo) == top_level_outputs
     assert _list_files(erepo, "scm_dir") == {"ipsum"}
     if dvc_top_level:
@@ -615,7 +681,13 @@ def test_ls_broken_dir(tmp_dir, dvc, M):
             "path": ".dvcignore",
             "size": M.instance_of(int),
         },
-        {"isdir": True, "isexec": False, "isout": True, "path": "broken", "size": 3},
+        {
+            "isdir": True,
+            "isexec": False,
+            "isout": True,
+            "path": "broken",
+            "size": 3,
+        },
         {
             "isdir": False,
             "isexec": False,
@@ -637,7 +709,13 @@ def test_ls_broken_dir(tmp_dir, dvc, M):
             "path": "dir.dvc",
             "size": M.instance_of(int),
         },
-        {"isdir": False, "isexec": False, "isout": True, "path": "foo", "size": 3},
+        {
+            "isdir": False,
+            "isexec": False,
+            "isout": True,
+            "path": "foo",
+            "size": 3,
+        },
         {
             "isdir": False,
             "isexec": False,
