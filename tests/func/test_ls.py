@@ -496,7 +496,6 @@ def test_ls_granular(erepo_dir, M):
     ]
 
     entries = Repo.ls(os.fspath(erepo_dir), "dir")
-    print(entries)
     assert entries == [
         {
             "isout": True,
@@ -646,6 +645,7 @@ def test_broken_symlink(tmp_dir, dvc, M):
             "isexec": False,
             "path": ".dvcignore",
             "size": M.instance_of(int),
+            "md5": None,
         },
         {
             "isout": False,
@@ -653,6 +653,7 @@ def test_broken_symlink(tmp_dir, dvc, M):
             "isexec": False,
             "path": "link",
             "size": 0,
+            "md5": None,
         },
     ]
 
@@ -684,6 +685,7 @@ def test_ls_broken_dir(tmp_dir, dvc, M):
             "isout": False,
             "path": ".dvcignore",
             "size": M.instance_of(int),
+            "md5": None,
         },
         {
             "isdir": True,
@@ -691,6 +693,7 @@ def test_ls_broken_dir(tmp_dir, dvc, M):
             "isout": True,
             "path": "broken",
             "size": 3,
+            "md5": "630bd47b538d2a513c7d267d07e0bc44.dir",
         },
         {
             "isdir": False,
@@ -698,6 +701,7 @@ def test_ls_broken_dir(tmp_dir, dvc, M):
             "isout": False,
             "path": "broken.dvc",
             "size": M.instance_of(int),
+            "md5": None,
         },
         {
             "isdir": True,
@@ -705,6 +709,7 @@ def test_ls_broken_dir(tmp_dir, dvc, M):
             "isout": True,
             "path": "dir",
             "size": M.instance_of(int),
+            "md5": "91aaa9bb58b657d623ef143b195a67e4.dir",
         },
         {
             "isdir": False,
@@ -712,6 +717,7 @@ def test_ls_broken_dir(tmp_dir, dvc, M):
             "isout": False,
             "path": "dir.dvc",
             "size": M.instance_of(int),
+            "md5": None,
         },
         {
             "isdir": False,
@@ -719,6 +725,7 @@ def test_ls_broken_dir(tmp_dir, dvc, M):
             "isout": True,
             "path": "foo",
             "size": 3,
+            "md5": "acbd18db4cc2f85cedef654fccc4a4d8",
         },
         {
             "isdir": False,
@@ -726,6 +733,7 @@ def test_ls_broken_dir(tmp_dir, dvc, M):
             "isout": False,
             "path": "foo.dvc",
             "size": M.instance_of(int),
+            "md5": None,
         },
     ]
 
