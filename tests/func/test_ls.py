@@ -552,6 +552,7 @@ def test_ls_target(erepo_dir, use_scm):
             "isexec": False,
             "path": "1",
             "size": 1,
+            "md5": "c4ca4238a0b923820dcc509a6f75849b" if not use_scm else None,
         }
     ]
     assert _ls(os.path.join("dir", "subdir", "foo")) == [
@@ -561,6 +562,7 @@ def test_ls_target(erepo_dir, use_scm):
             "isexec": False,
             "path": "foo",
             "size": 3,
+            "md5": "acbd18db4cc2f85cedef654fccc4a4d8" if not use_scm else None,
         }
     ]
     assert _ls(os.path.join("dir", "subdir")) == [
@@ -570,6 +572,7 @@ def test_ls_target(erepo_dir, use_scm):
             "isout": isout,
             "path": "bar",
             "size": 3,
+            "md5": "37b51d194a7513e45b56f6524f2d51f2" if not use_scm else None,
         },
         {
             "isdir": False,
@@ -577,6 +580,7 @@ def test_ls_target(erepo_dir, use_scm):
             "isout": isout,
             "path": "foo",
             "size": 3,
+            "md5": "acbd18db4cc2f85cedef654fccc4a4d8" if not use_scm else None,
         },
     ]
 
