@@ -40,9 +40,7 @@ def show_entries(entries, with_color=False, with_size=False, with_md5=False):
     if with_size or with_md5:
         ui.table(
             [
-                _format_entry(
-                    entry, fmt, with_size=with_size, with_md5=with_md5
-                )
+                _format_entry(entry, fmt, with_size=with_size, with_md5=with_md5)
                 for entry in entries
             ]
         )
@@ -143,9 +141,7 @@ def add_parser(subparsers, parent_parser):
         ),
     )
     list_parser.add_argument("--size", action="store_true", help="Show sizes.")
-    list_parser.add_argument(
-        "--md5", action="store_true", help="Show MD5 checksums."
-    )
+    list_parser.add_argument("--md5", action="store_true", help="Show MD5 checksums.")
     list_parser.add_argument(
         "path",
         nargs="?",
